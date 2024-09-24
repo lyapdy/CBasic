@@ -6,6 +6,10 @@
 #define MAX_X 15
 #define MAX_Y 15
 
+#define UP 1
+#define LEFT 2
+#define RIGHT 3
+#define DOWN 4
 
 typedef struct tail_t
 {
@@ -38,6 +42,7 @@ typedef struct food_t
 struct snake_t initSnake(int x, int y, size_t tsize)
 {
     struct snake_t snake;
+    snake.direction = LEFT;
     snake.x = x;
     snake.y = y;
     snake.tsize = tsize;
@@ -155,14 +160,48 @@ snake_t moveDown(snake_t snake)
 
 
 
-snake_t snakeMotion(snake_t snake, food_t food, int c)
+snake_t snakeMotion(snake_t snake)
+{      
+    switch (snake.direction){
+    case LEFT: return moveLeft(snake);    
+    case RIGHT: return moveRight(snake);
+    case UP: return moveUp(snake);
+    case DOWN: return moveDown(snake);
+    }
+}
+
+snake_t changeDirection(snake_t snake, char ch){
+    if ((snake.direction == LEFT) && ((ch == 'd') || (ch == 'D')))
+    snake.direction = LEFT;
+    else if ((snake.direction == RIGHT) && ((ch == 'a') || (ch == 'A')))
+    snake.direction = RIGHT;
+    else if ((snake.direction == UP) && ((ch == 's') || (ch == 'S')))
+    snake.direction = UP;
+    else if ((snake.direction == DOWN) && ((ch == 'w') || (ch == 'W')))
+    snake.direction = DOWN;
+    return snake;
+}
+
+
+
+int main()
 {
+    struct snake_t snake = initSnake(10, 5, 2);
+    struct food_t food = initFood(13, 7);
+    //struct snake_t direction = snakeMotion(snake, food, "L");
+
+    printSnakeFood(snake, food);
+
+    char c = 'a';
+
     while (1)
     {
         if (kbhit())
         {
             c = getch();
+            snake = changeDirection(snake, c);
         }
+        
         switch (c)
             {
             case 'W':
@@ -184,28 +223,16 @@ snake_t snakeMotion(snake_t snake, food_t food, int c)
             case 'd':
                 snake = moveRight(snake);
                 break;
-            }
-            sleep(1);
-            
-            system("cls");              
-            printSnakeFood(snake, food);
+            }            
+                       
+            printSnakeFood(snake, food);   
+            sleep(1);   
+            system("cls");        
              
-            }   
-}
+            }
+            
+            snakeMotion(snake); 
 
-
-
-int main()
-{
-    struct snake_t snake = initSnake(10, 5, 2);
-    struct food_t food = initFood(13, 7);
-    //struct snake_t direction = snakeMotion(snake, food, "L");
-
-    printSnakeFood(snake, food);
-
-    char ch = 'a';
-
-        snakeMotion(snake, food, ch);
             return 0;
 }
 
