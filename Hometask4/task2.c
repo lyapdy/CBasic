@@ -72,54 +72,54 @@ int main()
 	char str[1000];
 
 	int len = 0;
-	while ((c = getchar()) != '\n')
+	while ((c = getchar()) != '\n') // пока не перешли на следующую строку
 	{
-		str[len++] = c;
+		str[len++] = c; // добавляем в переменную str вводимый символ
 	}
-	str[len] = '\0';
+	str[len] = '\0'; // заканчиваем строку меткой 0
 
-	for (int i = 0; i < len; i++)
+	for (int i = 0; i < len; i++) // проходим по всей переменной str
 	{
-		if (str[i] >= '0' && str[i] <= '9')
+		if (str[i] >= '0' && str[i] <= '9') // если имеем дело с цифрой в диапазоне от 0 до 9
 		{
 			int number, size = 0;
-			for (number = 0; str[i] >= '0' && str[i] <= '9'; i++, size++)
+			for (number = 0; str[i] >= '0' && str[i] <= '9'; i++, size++) // для числа в диапазоне от 0 до 9 расширяем размер переменно str
 			{
 				number = number * 10 + (str[i] - '0');
 			}
-			sprintf(answer + pos, "%d", number);
+			sprintf(answer + pos, "%d", number); //печатаем цифру
 			pos += size + 1;
 		}
 		else
 		{
-			if (i >= len)
+			if (i >= len) // если i больше длины str
 			{
-				break;
+				break; // останавливаем цикл
 			}
 			c = str[i];
-			if (isOperator(c))
+			if (isOperator(c)) // является ли i-ый символ строки оператором 
 			{
-				while (!emptyStack())
+				while (!emptyStack()) // если стек не пустой
 				{
-					char top = pop();
-					if (priority(top) >= priority(c))
+					char top = pop(); // выталкиваем значение из стека
+					if (priority(top) >= priority(c)) // условие приоритета
 					{
-						sprintf(answer + pos, "%c", top);
+						sprintf(answer + pos, "%c", top); // печатаем вытолкнутое из стека значение
 						pos += 2;
 					}
-					else
+					else // иначе
 					{
-						push(top);
+						push(top); // заталкиваем в стек значение
 						break;
 					}
 				}
 				push(c);
 			}
-			else if (c == '(')
+			else if (c == '(') // работаем со скобками
 			{
 				push(c);
 			}
-			else if (c == ')')
+			else if (c == ')') // работаем со скобками
 			{
 				while ((c = pop()) != '(')
 				{
@@ -130,11 +130,11 @@ int main()
 		}
 	}
 
-	while (!emptyStack())
+	while (!emptyStack()) // пока в стеке что-то есть
 	{
-		char c = pop();
-		sprintf(answer + pos, "%c", c);
-		pos += 2;
+		char c = pop(); // выталкиваем верхнее значение из стека
+		sprintf(answer + pos, "%c", c); //печатаем это значение на соответствующей позиции
+		pos += 2; // меняем позицию в очереди печати строки
 	}
 	printf("Логическое выражение в польском варианте: ");
 	for (int i = 0; i < pos; i++)

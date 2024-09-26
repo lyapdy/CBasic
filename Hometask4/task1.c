@@ -13,41 +13,55 @@
 Данные на вход: 40 10
 Данные на выход: 847660528*/
 
-#include <stdio.h> // Подключаем библиотеку ввода - вывода
-#include <locale.h> // Русский язык понадобится
+#include <stdio.h>
+#include <locale.h>
 
 
-long long binomial_factor(int n, int k) // будем иметь дело с большими числами long long обычно имеет размер 64 бита (8 байт)
+int fact(int n, int k) // пишем функцию факториал, принимающую n и k
 {
-	if (k > n) // если k меньше n
+
+		if (k > n) // если k меньше n
 	{
 		printf("Ошибка, k не может быть больше, чем n.\n");
 		return -1;
 	}
-
-	long long result = 1;// присваиваем переменной result значение 1
-	for (int i = 1; i <= k; i++) // цикл для i меньше или равно k
-	{
-		result = result * (n - i + 1) / i; //реализуем формулу
+	const int maxn = n; // константа равная n
+	int C[maxn + 1][maxn + 1]; // это матрица размерностью равной количеству строк в треугольнике 
+	for (int i = 0; i <= maxn; i++) // проходим по строкам
+	{	
+		if (i>1)
+			{
+				printf("%d", 1); // печатаем 1 в начале каждой строки (не додумал как это сделать автоматически)
+			} 
+		C[i][0] = C[i][i] = 1; // первый и последний элемент каждой строки равен единице
+		for (int j = 1; j <= i; j++)
+		{printf(" ");
+			C[i][j] = C[i - 1][j - 1] + C[i - 1][j]; // формула треугольника Паскаля
+			
+			printf("%d", C[i][j]);
+			
 	}
-	return result;
+	
+	printf("\n");}
+	
+	return C[n][k];
 }
 
-int main()
+int main(void)
 {
-
-    setlocale(LC_ALL, "Russian");
+	setlocale(LC_ALL, "Rus");
 	int N, M;
 	printf("Введите положительные целые N и M: ");
-	scanf("%d %d", &N, &M);
-
+	scanf("%d", &N);
+	scanf("%d", &M);
 	if (N < 0 || M < 0)
 	{
 		printf("Ошибка! N и M должны быть положительными целыми числами.\n");
 		return -1;
 	}
 
-	long long options = binomial_factor(N, M);
-	printf("Количество вариантов выбора: %lld\n", options);
+	int Crez = fact(N, M);
+		printf("%d \n", Crez);
+
 	return 0;
 }
