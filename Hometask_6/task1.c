@@ -82,7 +82,7 @@ void invert_list(list **head) // функция, которая инвертирует
 	while (current != NULL)
 	{
 		next = current->next;
-		current->next = prev;
+		current->next = prev; //элементу next структуры list, на которое указывает указатель current, присвоить значение, указывающее на prev.
 		prev = current;
 		current = next;
 	}

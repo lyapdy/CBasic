@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <locale.h>
 #include "temp_functions.h"
 
 char file_name[256];
@@ -12,6 +13,8 @@ struct temperature month[12] = {0};
 union u union_month = {0};
 
 int main(int argc, char *argv[]) {
+
+    setlocale(LC_ALL, "Rus");
 
     print_info(); 
     
